@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "chunkview",
+	"version": "${version}",
+	"name": "ChunkView",
+	"description": "64-chunk render distance with a heightmap LOD and an adaptive visible-radius governor that protects the frame rate on PC and PojavLauncher.",
+	"authors": [
+		"ChunkView contributors"
+	],
+	"license": "MIT",
+	"icon": "assets/chunkview/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"dev.chunkview.ChunkView"
+		]
+	},
+	"mixins": [
+		{
+			"config": "chunkview.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.chunkview.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"OptionsMixin",
+		"ViewAreaMixin",
+		"SectionUpdateTrackerMixin",
+		"SectionOcclusionGraphMixin",
+		"GameRendererMixin",
+		"LevelExtractorMixin",
+		"ChunkMapMixin",
+		"DistanceManagerMixin",
+		"ChunkTaskPriorityQueueMixin",
+		"ClientLevelMixin",
+		"BlockEntityRenderDispatcherMixin",
+		"PlayerListMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
