@@ -27,6 +27,8 @@ public final class ChunkViewConfig {
 	public int fullDetailDistance = 24;
 
 	public boolean lodEnabled = true;
+	/** Let Distant Horizons own the far terrain instead of drawing two LODs. */
+	public boolean disableLodWithDistantHorizons = true;
 	/** Blocks per LOD cell. 4 = smoother, 8 = faster (recommended for phones). */
 	public int lodCellSize = 2;
 	public boolean lodSkirts = true;
@@ -98,13 +100,22 @@ public final class ChunkViewConfig {
 	}
 
 	public boolean lodActive() {
-		return lodEnabled && fullDetailDistance + 1 < maxRenderDistance;
+		return lodEnabled
+			&& !(disableLodWithDistantHorizons && ChunkViewCompat.DISTANT_HORIZONS)
+			&& fullDetailDistance + 1 < maxRenderDistance;
+	}
+
+	/** True when Distant Horizons is installed and owns the far LOD. */
+	public boolean distantHorizonsMode() {
+		return disableLodWithDistantHorizons && ChunkViewCompat.DISTANT_HORIZONS;
 	}
 
 	public String describe() {
 		return "max=" + maxRenderDistance
 			+ ", fullDetail=" + fullDetailDistance
-			+ ", lod=" + (lodEnabled ? lodCellSize + "b cells" : "off")
+			+ ", lod=" + (distantHorizonsMode()
+				? "off (Distant Horizons)"
+				: (lodEnabled ? lodCellSize + "b cells" : "off"))
 			+ ", adaptive=" + (adaptiveEnabled ? "on/" + targetFps + "fps/min" + minVisibleDistance : "off")
 			+ ", entityCull=" + entityCullDistance
 			+ ", blockEntityCull=" + blockEntityCullDistance

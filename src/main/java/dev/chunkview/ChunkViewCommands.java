@@ -109,6 +109,11 @@ public final class ChunkViewCommands {
 			"[ChunkView] LOD regions: " + LodWorld.renderRegions().size()
 				+ ", heap-safe max: " + ChunkView.memorySafeRenderDistance() + " chunks"
 		));
+		if (config.distantHorizonsMode()) {
+			source.sendFeedback(Component.literal(
+				"[ChunkView] Distant Horizons detected: ChunkView heightmap LOD disabled, DH owns the far terrain."
+			));
+		}
 		return 1;
 	}
 }

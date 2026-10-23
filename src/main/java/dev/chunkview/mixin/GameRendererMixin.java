@@ -1,6 +1,7 @@
 package dev.chunkview.mixin;
 
 import dev.chunkview.ChunkView;
+import dev.chunkview.ChunkViewCompat;
 import dev.chunkview.ChunkViewConfig;
 import dev.chunkview.PerformanceGovernor;
 import net.minecraft.client.renderer.GameRenderer;
@@ -24,6 +25,10 @@ public class GameRendererMixin {
 	)
 	private int chunkview$fogMatchesVisibleRing(int vanillaDistance) {
 		ChunkViewConfig config = ChunkView.config();
+		// Distant Horizons needs the full fog range for its own far LOD.
+		if (ChunkViewCompat.DISTANT_HORIZONS && config.disableLodWithDistantHorizons) {
+			return vanillaDistance;
+		}
 		return config.matchFogToVisibleRing
 			? PerformanceGovernor.fogDistanceChunks(vanillaDistance)
 			: vanillaDistance;

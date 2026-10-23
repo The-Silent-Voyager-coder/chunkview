@@ -8,7 +8,8 @@ The governor keeps chunks **loaded** at the requested distance but shrinks only 
 
 - **64-chunk slider** — Options > Video Settings > Render Distance now reaches 64 instead of 32.
 - **Adaptive FPS governor** — targets 62 FPS by default, shrinks the visible ring when FPS drops, and grows it back after a stable period. Chunks stay loaded. Press **F6** to toggle it.
-- **Full-detail clamp** — vanilla chunk meshes, lighting and entities are limited to `fullDetailDistance` (24 by default). Everything beyond is LOD.
+- **Full-detail clamp** - vanilla chunk meshes, lighting and entities are limited to `fullDetailDistance` (24 by default). Everything beyond is LOD.
+- **Distant Horizons auto mode** - if DH is installed, ChunkView disables its own heightmap LOD and lets DH own the far terrain. The 64 slider, governor, culling and memory guard stay active.
 - **Heightmap LOD** — far terrain is merged into 2/4/8-block cells with skirts for height steps. Leaves do not get skirts, which avoids giant green walls under far canopies.
 - **Entity and block-entity culling** — entities and block entities beyond the configured distance are skipped before extraction.
 - **Fog matching** — fog follows the governed visible radius so the reduced ring never shows a hard edge.
@@ -83,6 +84,7 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
 | `regionBuildsPerFrame` | `1` | LOD regions rebuilt per tick (1–4). |
 | `lodOverworldOnly` | `true` | Build LOD only in the Overworld. |
 | `lodEnabled` | `true` | Master LOD switch. |
+| `disableLodWithDistantHorizons` | `true` | When DH is installed, disable ChunkView's heightmap LOD and let DH own the far terrain. |
 | `lodSkirts` | `true` | Vertical skirts on solid cells. |
 | `debug` | `false` | Diagnostic region logging. |
 
@@ -101,6 +103,7 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
   "regionBuildsPerFrame": 1,
   "lodOverworldOnly": true,
   "lodEnabled": true,
+  "disableLodWithDistantHorizons": true,
   "lodSkirts": true,
   "debug": false
 }
@@ -129,6 +132,25 @@ The far ring is a heightmap LOD, so distant buildings lose interior detail and o
 - Use `/chunkview preset quality` (24 full-detail chunks, 2-block LOD cells).
 - Keep `lodSkirts` enabled; structure walls are preserved as side faces.
 - Raise `fullDetailDistance` if you have GPU/CPU headroom. It costs quadratically.
+
+### Distant Horizons mode
+
+If [Distant Horizons](https://modrinth.com/mod/distanthorizons) is installed, ChunkView detects it and **turns off its own heightmap LOD**. DH's voxel LOD keeps 3D shapes, overhangs and structures, which is the better choice for visual fidelity.
+
+Tested stack for Minecraft 26.2:
+
+- ChunkView 0.3.0
+- Distant Horizons 3.3.3-26.2
+- Sodium 0.9.2+mc26.2
+
+In this mode:
+
+- ChunkView still raises the slider, keeps chunks loaded, adapts the visible radius and culls distant entities/block entities.
+- DH owns the far terrain and its own config screen (`LOD Chunk Render Distance Radius`, quality preset, CPU load).
+- ChunkView's fog override is disabled so DH's far LOD is not hidden by the vanilla fog ring.
+- Set `disableLodWithDistantHorizons` to `false` only if you deliberately want both LOD systems at once (not recommended).
+
+On a phone, lower DH's quality preset and LOD radius first. DH is much heavier than the heightmap fallback, but it looks dramatically better.
 
 ## Troubleshooting
 
