@@ -213,7 +213,7 @@ public final class LodRenderer {
 		GpuBufferSlice transform = RenderSystem.getDynamicUniforms().writeTransform(
 			modelView,
 			new Vector4f(light, light, light, 1.0f),
-			new Vector3f((fullDetail + 1) * 16.0f, 0.0f, 0.0f),
+			new Vector3f(fullDetail * 16.0f - 4.0f, 0.0f, 0.0f),
 			new Matrix4f()
 		);
 

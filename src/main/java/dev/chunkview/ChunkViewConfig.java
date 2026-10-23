@@ -24,11 +24,11 @@ public final class ChunkViewConfig {
 	 * Chunks rendered by Minecraft's normal chunk renderer (full blocks, real
 	 * lighting, entities). Everything past this is drawn by the heightmap LOD.
 	 */
-	public int fullDetailDistance = 20;
+	public int fullDetailDistance = 24;
 
 	public boolean lodEnabled = true;
 	/** Blocks per LOD cell. 4 = smoother, 8 = faster (recommended for phones). */
-	public int lodCellSize = 4;
+	public int lodCellSize = 2;
 	public boolean lodSkirts = true;
 	public boolean lodOverworldOnly = true;
 
@@ -37,13 +37,13 @@ public final class ChunkViewConfig {
 	/** Aim slightly above 60 so dips do not fall under the requested minimum. */
 	public int targetFps = 62;
 	/** Never shrink the visible ring below this many chunks. */
-	public int minVisibleDistance = 12;
+	public int minVisibleDistance = 16;
 	/** Starting visible radius when entering a world. */
 	public int initialVisibleDistance = 64;
 	/** Entities beyond this many blocks are skipped. 0 = off. */
-	public int entityCullDistance = 96;
+	public int entityCullDistance = 128;
 	/** Block entities beyond this many blocks are skipped. 0 = off. */
-	public int blockEntityCullDistance = 96;
+	public int blockEntityCullDistance = 128;
 	/** Keep the fog edge at the visible ring when the governor shrinks it. */
 	public boolean matchFogToVisibleRing = true;
 

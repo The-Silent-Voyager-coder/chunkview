@@ -8,7 +8,7 @@ The governor keeps chunks **loaded** at the requested distance but shrinks only 
 
 - **64-chunk slider** — Options > Video Settings > Render Distance now reaches 64 instead of 32.
 - **Adaptive FPS governor** — targets 62 FPS by default, shrinks the visible ring when FPS drops, and grows it back after a stable period. Chunks stay loaded. Press **F6** to toggle it.
-- **Full-detail clamp** — vanilla chunk meshes, lighting and entities are limited to `fullDetailDistance` (20 by default). Everything beyond is LOD.
+- **Full-detail clamp** — vanilla chunk meshes, lighting and entities are limited to `fullDetailDistance` (24 by default). Everything beyond is LOD.
 - **Heightmap LOD** — far terrain is merged into 2/4/8-block cells with skirts for height steps. Leaves do not get skirts, which avoids giant green walls under far canopies.
 - **Entity and block-entity culling** — entities and block entities beyond the configured distance are skipped before extraction.
 - **Fog matching** — fog follows the governed visible radius so the reduced ring never shows a hard edge.
@@ -51,7 +51,7 @@ Java 25 is mandatory for Minecraft 26.2. PojavLauncher must use a Java 25 runtim
 3. Turn **VSync off** and set the framerate cap to 120+ if you want to measure above 60 FPS. With VSync on, a 60 Hz panel physically caps at 60.
 4. Press **F6** to toggle the adaptive governor. `/chunkview status` shows the current visible radius, FPS, target and loaded chunks.
 
-The LOD fills the band beyond `fullDetailDistance`. Near LOD cells are discarded under the vanilla terrain, and the LOD starts one chunk beyond the vanilla grid to avoid z-fighting at the seam.
+The LOD fills the band beyond `fullDetailDistance`. Near LOD cells are discarded under the vanilla terrain, and the LOD starts just inside the vanilla grid edge to avoid a gap, with a small overlap hidden by vanilla terrain.
 
 ### Commands
 
@@ -71,14 +71,14 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
 | Field | Default | Description |
 | --- | --- | --- |
 | `maxRenderDistance` | `64` | Highest slider/server value. Also capped by the memory guard. |
-| `fullDetailDistance` | `20` | Vanilla full-detail radius in chunks. |
-| `lodCellSize` | `4` | Blocks per LOD cell: `2`, `4` or `8`. `2` is best for structures, `8` is phone-friendly. |
+| `fullDetailDistance` | `24` | Vanilla full-detail radius in chunks. |
+| `lodCellSize` | `2` | Blocks per LOD cell: `2`, `4` or `8`. `2` is best for structures, `8` is phone-friendly. |
 | `adaptiveEnabled` | `true` | Enable the FPS governor. |
 | `targetFps` | `62` | FPS the governor tries to hold. |
-| `minVisibleDistance` | `12` | Lowest visible radius. |
+| `minVisibleDistance` | `16` | Lowest visible radius. |
 | `initialVisibleDistance` | `64` | Starting visible radius on world join. |
-| `entityCullDistance` | `96` | Skip entities beyond this many blocks. `0` = off. |
-| `blockEntityCullDistance` | `96` | Skip block entities beyond this many blocks. `0` = off. |
+| `entityCullDistance` | `128` | Skip entities beyond this many blocks. `0` = off. |
+| `blockEntityCullDistance` | `128` | Skip block entities beyond this many blocks. `0` = off. |
 | `matchFogToVisibleRing` | `true` | Move fog with the governed visible radius. |
 | `regionBuildsPerFrame` | `1` | LOD regions rebuilt per tick (1–4). |
 | `lodOverworldOnly` | `true` | Build LOD only in the Overworld. |
@@ -89,14 +89,14 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
 ```json
 {
   "maxRenderDistance": 64,
-  "fullDetailDistance": 20,
-  "lodCellSize": 4,
+  "fullDetailDistance": 24,
+  "lodCellSize": 2,
   "adaptiveEnabled": true,
   "targetFps": 62,
-  "minVisibleDistance": 12,
+  "minVisibleDistance": 16,
   "initialVisibleDistance": 64,
-  "entityCullDistance": 96,
-  "blockEntityCullDistance": 96,
+  "entityCullDistance": 128,
+  "blockEntityCullDistance": 128,
   "matchFogToVisibleRing": true,
   "regionBuildsPerFrame": 1,
   "lodOverworldOnly": true,
@@ -158,3 +158,4 @@ The keep-chunks-loaded adaptive visible-radius approach and the general performa
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
