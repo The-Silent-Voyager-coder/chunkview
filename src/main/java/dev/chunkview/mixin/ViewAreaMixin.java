@@ -20,8 +20,17 @@ public class ViewAreaMixin {
 		index = 6
 	)
 	private static int chunkview$clampFullDetailGrid(int renderDistance) {
-		int clamped = Math.max(2, Math.min(renderDistance, ChunkView.fullDetailDistance()));
-		ChunkView.LOGGER.info("[ChunkView] ViewArea render distance {} -> {}", renderDistance, clamped);
+		if (renderDistance <= 0 || !shouldClampFullDetail()) {
+			return renderDistance;
+		}
+		int clamped = Math.min(renderDistance, Math.max(1, ChunkView.fullDetailDistance()));
+		if (clamped != renderDistance) {
+			ChunkView.LOGGER.info("[ChunkView] ViewArea render distance {} -> {}", renderDistance, clamped);
+		}
 		return clamped;
+	}
+
+	private static boolean shouldClampFullDetail() {
+		return ChunkView.config().lodActive() || ChunkView.config().distantHorizonsMode();
 	}
 }

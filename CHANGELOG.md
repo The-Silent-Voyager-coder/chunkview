@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 — 2026-10-23
+
+- Fixed the `ViewArea` constructor clamping an uninitialized render distance of 0 to 2 chunks.
+- Only clamp the vanilla section grids when ChunkView LOD (or DH mode) is actually active; with LOD disabled and no DH, vanilla now keeps its full render distance.
+- Logging is quieter: grid changes are logged only when the value actually changes.
+
 ## 0.3.0 — 2026-10-23
 
 - Added automatic **Distant Horizons mode**: when DH is installed, ChunkView disables its own heightmap LOD so DH owns the far terrain.

@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$ProjectId,
-    [string]$Jar = "dist\ChunkView-0.3.0-mc26.2.jar",
+    [string]$Jar = "dist\ChunkView-0.3.1-mc26.2.jar",
     [string]$Token = $env:MODRINTH_TOKEN
 )
 
@@ -15,8 +15,8 @@ if (-not (Test-Path $Jar)) {
 
 $changelog = Get-Content "CHANGELOG.md" -Raw
 $body = @{
-    name           = "ChunkView 0.3.0"
-    version_number = "0.3.0"
+    name           = "ChunkView 0.3.1"
+    version_number = "0.3.1"
     changelog      = $changelog
     dependencies   = @()
     game_versions  = @("26.2")

@@ -21,8 +21,17 @@ public class SectionUpdateTrackerMixin {
 		index = 2
 	)
 	private static int chunkview$clampExtractionGrid(int renderDistance) {
-		int clamped = Math.max(2, Math.min(renderDistance, ChunkView.fullDetailDistance()));
-		ChunkView.LOGGER.info("[ChunkView] SectionUpdateTracker render distance {} -> {}", renderDistance, clamped);
+		if (renderDistance <= 0 || !shouldClampFullDetail()) {
+			return renderDistance;
+		}
+		int clamped = Math.min(renderDistance, Math.max(1, ChunkView.fullDetailDistance()));
+		if (clamped != renderDistance) {
+			ChunkView.LOGGER.info("[ChunkView] SectionUpdateTracker render distance {} -> {}", renderDistance, clamped);
+		}
 		return clamped;
+	}
+
+	private static boolean shouldClampFullDetail() {
+		return ChunkView.config().lodActive() || ChunkView.config().distantHorizonsMode();
 	}
 }
