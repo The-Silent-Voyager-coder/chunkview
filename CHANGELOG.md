@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 — 2026-10-24
+
+- Added a one-line join message showing the active LOD/DH mode and the F6/status hints (`showJoinMessage`).
+
 ## 0.4.0 — 2026-10-24
 
 - Added Sodium integration: Sodium's own render-distance slider now reaches the ChunkView maximum, and Sodium's terrain section radius is capped to the full-detail ring while LOD or Distant Horizons owns the far terrain.

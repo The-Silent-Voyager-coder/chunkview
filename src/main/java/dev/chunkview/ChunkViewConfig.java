@@ -61,6 +61,9 @@ public final class ChunkViewConfig {
 
 	public boolean debug = false;
 
+	/** Send a short chat summary when joining a world. */
+	public boolean showJoinMessage = true;
+
 	public static ChunkViewConfig load() {
 		ChunkViewConfig config = new ChunkViewConfig();
 		try {

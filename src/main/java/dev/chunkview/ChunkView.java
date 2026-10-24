@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -126,6 +127,21 @@ public final class ChunkView implements ClientModInitializer {
 				}
 			}
 			PerformanceGovernor.tick(client);
+		});
+
+		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+			ChunkViewConfig current = config();
+			if (!current.showJoinMessage || client.player == null) {
+				return;
+			}
+			String mode = current.distantHorizonsMode()
+				? "Distant Horizons owns the far terrain"
+				: (current.lodActive()
+					? "LOD " + current.lodCellSize + "-block cells"
+					: "full-detail terrain");
+			client.player.sendSystemMessage(Component.literal(
+				"[ChunkView] " + mode + " | F6 = adaptive governor | /chunkview status"
+			).withStyle(ChatFormatting.AQUA));
 		});
 
 		long heapMb = Runtime.getRuntime().maxMemory() / (1024L * 1024L);

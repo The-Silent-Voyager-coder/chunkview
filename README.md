@@ -92,6 +92,7 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
 | `sodiumConfigOverlay` | `true` | Extend Sodium's own render-distance slider to the ChunkView maximum. |
 | `lodSkirts` | `true` | Vertical skirts on solid cells. |
 | `debug` | `false` | Diagnostic region logging. |
+| `showJoinMessage` | `true` | Send a one-line ChunkView summary in chat when joining a world. |
 
 ```json
 {
@@ -112,7 +113,8 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
   "sodiumIntegration": true,
   "sodiumConfigOverlay": true,
   "lodSkirts": true,
-  "debug": false
+  "debug": false,
+  "showJoinMessage": true
 }
 ```
 
@@ -157,7 +159,7 @@ If [Distant Horizons](https://modrinth.com/mod/distanthorizons) is installed, Ch
 
 Tested stack for Minecraft 26.2:
 
-- ChunkView 0.4.0
+- ChunkView 0.4.1
 - Distant Horizons 3.3.3-26.2
 - Sodium 0.9.2+mc26.2
 
