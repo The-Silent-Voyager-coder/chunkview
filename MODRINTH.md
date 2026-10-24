@@ -63,6 +63,7 @@ For Distant Horizons mode, also install DH and Sodium. ChunkView detects DH and 
 
 ## Links
 
+- Modrinth: https://modrinth.com/mod/chunkview
 - Source: https://github.com/The-Silent-Voyager-coder/chunkview
 - Issues: https://github.com/The-Silent-Voyager-coder/chunkview/issues
 - License: MIT

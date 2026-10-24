@@ -201,3 +201,9 @@ The keep-chunks-loaded adaptive visible-radius approach and several vanilla mixi
 
 MIT. See [LICENSE](LICENSE).
 
+## Links
+
+- Modrinth: https://modrinth.com/mod/chunkview
+- Source: https://github.com/The-Silent-Voyager-coder/chunkview
+- Issues: https://github.com/The-Silent-Voyager-coder/chunkview/issues
+
