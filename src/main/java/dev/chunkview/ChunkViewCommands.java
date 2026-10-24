@@ -76,14 +76,18 @@ public final class ChunkViewCommands {
 							"name", StringArgumentType.word())
 						.executes(context -> {
 							String name = StringArgumentType.getString(context, "name");
-							if (!ChunkView.config().applyPreset(name)) {
+							ChunkViewConfig config = ChunkView.config();
+							if (!config.applyPreset(name)) {
 								context.getSource().sendError(Component.literal(
 									"[ChunkView] Unknown preset. Use phone, balanced, or quality."
 								));
 								return 0;
 							}
-							LodWorld.reload();
-							PerformanceGovernor.reset();
+							config.sanitize();
+							config.save();
+							// Reload through the shared path so the section grids are
+							// rebuilt with the preset's fullDetailDistance.
+							ChunkView.reloadConfig();
 							context.getSource().sendFeedback(Component.literal(
 								"[ChunkView] Preset '" + name + "': " + ChunkView.config().describe()
 							));
@@ -112,6 +116,16 @@ public final class ChunkViewCommands {
 		if (config.distantHorizonsMode()) {
 			source.sendFeedback(Component.literal(
 				"[ChunkView] Distant Horizons detected: ChunkView heightmap LOD disabled, DH owns the far terrain."
+			));
+		}
+		if (ChunkViewCompat.SODIUM) {
+			source.sendFeedback(Component.literal(
+				"[ChunkView] Sodium detected: slider max " + ChunkView.maxRenderDistance()
+					+ ", terrain radius "
+					+ (ChunkView.sodiumVisibleChunks() > 0
+						? ChunkView.sodiumVisibleChunks() + " chunks"
+						: "left to Sodium")
+					+ "."
 			));
 		}
 		return 1;

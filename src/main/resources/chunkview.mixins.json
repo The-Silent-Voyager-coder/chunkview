@@ -15,7 +15,8 @@
 		"ChunkTaskPriorityQueueMixin",
 		"ClientLevelMixin",
 		"BlockEntityRenderDispatcherMixin",
-		"PlayerListMixin"
+		"PlayerListMixin",
+		"IntegratedServerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

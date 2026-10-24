@@ -11,6 +11,7 @@ The governor keeps chunks **loaded** at the requested distance but shrinks only 
 - **Vanilla full detail near the player** — `fullDetailDistance` defaults to 24 chunks.
 - **Heightmap LOD fallback** — 2/4/8-block cells, color sampling, skirts for height steps, and no leaf skirts.
 - **Distant Horizons auto mode** — if DH is installed, ChunkView disables its own heightmap LOD and lets DH own the far terrain, preserving 3D shapes and structures.
+- **Sodium integration** — extends Sodium's render-distance slider to 64 and caps Sodium's terrain meshing to the full-detail ring while LOD/DH fills the distance.
 - **Entity and block-entity culling** — configurable cull distances.
 - **Fog matching** — fog follows the governed visible ring; disabled automatically in DH mode so DH's far terrain stays visible.
 - **Memory guard** — caps the slider/server distance from the JVM heap (64 chunks at 4 GB+, 48 at 3 GB, 32 at 2 GB, 24 at 1.5 GB, 16 below).
@@ -35,7 +36,7 @@ Optional, recommended for the best far-terrain quality:
 
 1. Install Fabric Loader 0.19.5+ for Minecraft 26.2.
 2. Install Fabric API 0.161.0+26.2.
-3. Put `ChunkView-0.3.1-mc26.2.jar` in `.minecraft/mods`.
+3. Put `ChunkView-0.4.0-mc26.2.jar` in `.minecraft/mods`.
 4. Launch with Java 25.
 5. Set Render Distance to 64 in Video Settings.
 6. Turn VSync off and raise the frame cap if you want to measure above 60 FPS.

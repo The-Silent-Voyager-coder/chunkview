@@ -8,6 +8,7 @@ import net.fabricmc.loader.api.FabricLoader;
  */
 public final class ChunkViewCompat {
 	public static final boolean SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
+	public static final boolean C2ME = FabricLoader.getInstance().isModLoaded("c2me");
 	public static final boolean IRIS = FabricLoader.getInstance().isModLoaded("iris");
 	public static final boolean VULKANMOD = FabricLoader.getInstance().isModLoaded("vulkanmod");
 	public static final boolean DISTANT_HORIZONS = FabricLoader.getInstance().isModLoaded("distanthorizons");
@@ -19,6 +20,7 @@ public final class ChunkViewCompat {
 	public static String describe() {
 		StringBuilder result = new StringBuilder();
 		append(result, "Sodium", SODIUM);
+		append(result, "C2ME", C2ME);
 		append(result, "Iris", IRIS);
 		append(result, "VulkanMod", VULKANMOD);
 		append(result, "Distant Horizons", DISTANT_HORIZONS);

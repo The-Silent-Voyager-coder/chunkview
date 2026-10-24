@@ -11,6 +11,10 @@ base {
 
 repositories {
 	// Loom already provides Minecraft / Fabric maven repositories.
+	maven {
+		name = "CaffeineMC"
+		url = "https://maven.caffeinemc.net/releases"
+	}
 }
 
 loom {
@@ -25,6 +29,10 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// Optional Sodium integration. Compile-only; Sodium is never bundled.
+	compileOnly "net.caffeinemc:sodium-fabric:0.9.2+mc26.2"
+	compileOnly "net.caffeinemc:sodium-fabric-api:0.9.2+mc26.2"
 }
 
 processResources {

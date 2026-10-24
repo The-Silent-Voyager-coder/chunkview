@@ -29,6 +29,10 @@ public final class ChunkViewConfig {
 	public boolean lodEnabled = true;
 	/** Let Distant Horizons own the far terrain instead of drawing two LODs. */
 	public boolean disableLodWithDistantHorizons = true;
+	/** Apply the governor and full-detail clamp to Sodium's terrain renderer. */
+	public boolean sodiumIntegration = true;
+	/** Extend Sodium's own render-distance slider to the ChunkView maximum. */
+	public boolean sodiumConfigOverlay = true;
 	/** Blocks per LOD cell. 4 = smoother, 8 = faster (recommended for phones). */
 	public int lodCellSize = 2;
 	public boolean lodSkirts = true;
@@ -41,9 +45,9 @@ public final class ChunkViewConfig {
 	/** Never shrink the visible ring below this many chunks. */
 	public int minVisibleDistance = 16;
 	/** Starting visible radius when entering a world. */
-	public int initialVisibleDistance = 64;
+	public int initialVisibleDistance = 48;
 	/** Entities beyond this many blocks are skipped. 0 = off. */
-	public int entityCullDistance = 128;
+	public int entityCullDistance = 192;
 	/** Block entities beyond this many blocks are skipped. 0 = off. */
 	public int blockEntityCullDistance = 128;
 	/** Keep the fog edge at the visible ring when the governor shrinks it. */

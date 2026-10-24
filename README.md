@@ -10,6 +10,7 @@ The governor keeps chunks **loaded** at the requested distance but shrinks only 
 - **Adaptive FPS governor** — targets 62 FPS by default, shrinks the visible ring when FPS drops, and grows it back after a stable period. Chunks stay loaded. Press **F6** to toggle it.
 - **Full-detail clamp** - vanilla chunk meshes, lighting and entities are limited to `fullDetailDistance` (24 by default). Everything beyond is LOD.
 - **Distant Horizons auto mode** - if DH is installed, ChunkView disables its own heightmap LOD and lets DH own the far terrain. The 64 slider, governor, culling and memory guard stay active.
+- **Sodium integration** - extends Sodium's own render-distance slider to 64 and caps Sodium's terrain section radius to the full-detail ring, so Sodium does not mesh all 64 chunks at full detail. Chunks stay loaded; the LOD/DH fills the far ring.
 - **Heightmap LOD** — far terrain is merged into 2/4/8-block cells with skirts for height steps. Leaves do not get skirts, which avoids giant green walls under far canopies.
 - **Entity and block-entity culling** — entities and block entities beyond the configured distance are skipped before extraction.
 - **Fog matching** — fog follows the governed visible radius so the reduced ring never shows a hard edge.
@@ -28,6 +29,8 @@ The governor keeps chunks **loaded** at the requested distance but shrinks only 
 | Java | 25 |
 
 Java 25 is mandatory for Minecraft 26.2. PojavLauncher must use a Java 25 runtime; Java 17 or 21 fails before the title screen.
+
+Optional: [Sodium](https://modrinth.com/mod/sodium) `0.9.2+mc26.2` for the Sodium renderer path, and [Distant Horizons](https://modrinth.com/mod/distanthorizons) `3.3.3-26.2` for voxel far terrain.
 
 ## Installation
 
@@ -77,14 +80,16 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
 | `adaptiveEnabled` | `true` | Enable the FPS governor. |
 | `targetFps` | `62` | FPS the governor tries to hold. |
 | `minVisibleDistance` | `16` | Lowest visible radius. |
-| `initialVisibleDistance` | `64` | Starting visible radius on world join. |
-| `entityCullDistance` | `128` | Skip entities beyond this many blocks. `0` = off. |
+| `initialVisibleDistance` | `48` | Starting visible radius on world join. |
+| `entityCullDistance` | `192` | Skip entities beyond this many blocks. `0` = off. |
 | `blockEntityCullDistance` | `128` | Skip block entities beyond this many blocks. `0` = off. |
 | `matchFogToVisibleRing` | `true` | Move fog with the governed visible radius. |
 | `regionBuildsPerFrame` | `1` | LOD regions rebuilt per tick (1–4). |
 | `lodOverworldOnly` | `true` | Build LOD only in the Overworld. |
 | `lodEnabled` | `true` | Master LOD switch. |
 | `disableLodWithDistantHorizons` | `true` | When DH is installed, disable ChunkView's heightmap LOD and let DH own the far terrain. |
+| `sodiumIntegration` | `true` | Cap Sodium's terrain section radius in LOD/DH mode and follow the governor without LOD. |
+| `sodiumConfigOverlay` | `true` | Extend Sodium's own render-distance slider to the ChunkView maximum. |
 | `lodSkirts` | `true` | Vertical skirts on solid cells. |
 | `debug` | `false` | Diagnostic region logging. |
 
@@ -96,14 +101,16 @@ The config is created at `.minecraft/config/chunkview.json` (Pojav: inside the i
   "adaptiveEnabled": true,
   "targetFps": 62,
   "minVisibleDistance": 16,
-  "initialVisibleDistance": 64,
-  "entityCullDistance": 128,
+  "initialVisibleDistance": 48,
+  "entityCullDistance": 192,
   "blockEntityCullDistance": 128,
   "matchFogToVisibleRing": true,
   "regionBuildsPerFrame": 1,
   "lodOverworldOnly": true,
   "lodEnabled": true,
   "disableLodWithDistantHorizons": true,
+  "sodiumIntegration": true,
+  "sodiumConfigOverlay": true,
   "lodSkirts": true,
   "debug": false
 }
@@ -133,13 +140,24 @@ The far ring is a heightmap LOD, so distant buildings lose interior detail and o
 - Keep `lodSkirts` enabled; structure walls are preserved as side faces.
 - Raise `fullDetailDistance` if you have GPU/CPU headroom. It costs quadratically.
 
+### Sodium
+
+Sodium replaces vanilla's `ViewArea` and `SectionUpdateTracker`, so ChunkView has a separate Sodium path:
+
+- Sodium's own render-distance slider is extended from 32 to the ChunkView maximum (`sodiumConfigOverlay`).
+- While LOD or Distant Horizons owns the far ring, Sodium's terrain search radius is capped to `fullDetailDistance`. Sodium stops meshing the 64-chunk ring at full detail; chunks stay loaded and the LOD/DH draws the distance.
+- Without LOD, Sodium's radius follows the adaptive governor's visible ring.
+- Sodium's fog is left alone in LOD/DH mode so the far ring is not hidden.
+
+Tested with Sodium `0.9.2+mc26.2`. Set `sodiumIntegration` to `false` only if another mod already manages Sodium's render distance (for example C2ME).
+
 ### Distant Horizons mode
 
 If [Distant Horizons](https://modrinth.com/mod/distanthorizons) is installed, ChunkView detects it and **turns off its own heightmap LOD**. DH's voxel LOD keeps 3D shapes, overhangs and structures, which is the better choice for visual fidelity.
 
 Tested stack for Minecraft 26.2:
 
-- ChunkView 0.3.0
+- ChunkView 0.4.0
 - Distant Horizons 3.3.3-26.2
 - Sodium 0.9.2+mc26.2
 
@@ -167,7 +185,7 @@ Logs are in `.minecraft/logs/latest.log`; search for `[ChunkView]`.
 ## How it works
 
 1. **Slider mixin** raises the vanilla render-distance maximum to `maxRenderDistance`.
-2. **ViewArea/SectionUpdateTracker mixins** keep vanilla chunk meshes at the full-detail radius.
+2. **ViewArea/SectionUpdateTracker mixins** keep vanilla chunk meshes at the full-detail radius. **Sodium** gets the same cap through its section-manager radius and its config slider is extended.
 3. **Heightmap LOD** samples the top block per cell, averages colors, emits top faces and capped skirts, and skips leaf skirts.
 4. **One GPU pass** draws visible LOD regions with frustum/distance culling and a near-discard at the full-detail boundary.
 5. **Governor** samples FPS once per second, caps the section-occlusion graph and LOD ring without unloading chunks, and matches fog to the reduced ring.

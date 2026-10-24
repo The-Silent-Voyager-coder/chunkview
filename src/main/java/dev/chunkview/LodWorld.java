@@ -117,8 +117,9 @@ public final class LodWorld {
 		}
 
 		ChunkViewConfig config = ChunkView.config();
-		int distance = Math.min(minecraft.options.renderDistance().get(), config.maxRenderDistance);
-		renderDistance = distance > config.fullDetailDistance ? distance : 0;
+		// Never build LOD for chunks the heap guard already refuses to hold.
+		int distance = Math.min(minecraft.options.renderDistance().get(), ChunkView.maxRenderDistance());
+		renderDistance = distance > ChunkView.fullDetailDistance() ? distance : 0;
 
 		if (renderDistance == 0
 			|| !config.lodActive()

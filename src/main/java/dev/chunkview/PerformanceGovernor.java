@@ -92,6 +92,7 @@ public final class PerformanceGovernor {
 		}
 
 		int target = effectiveTarget(minecraft, config);
+		boolean vsync = minecraft.options.enableVsync().get();
 		int min = Math.min(config.minVisibleDistance, maxChunks);
 		int next = visibleChunks;
 
@@ -107,13 +108,17 @@ public final class PerformanceGovernor {
 			growAfterMs = now + GROW_COOLDOWN_MS;
 			goodSamples = 0;
 		} else if (now >= growAfterMs && visibleChunks < maxChunks) {
-			if (fps > target + 6) {
+			// With VSync the frame rate is pinned to the refresh rate, so
+			// "target + 6" can never be reached. Treat holding the refresh rate
+			// as headroom and grow more cautiously.
+			int growThreshold = vsync ? target - 1 : target + 6;
+			if (fps >= growThreshold) {
 				goodSamples++;
 			} else {
 				goodSamples = 0;
 			}
-			if (goodSamples >= 3) {
-				int step = fps > target + 20 ? 2 : 1;
+			if (goodSamples >= (vsync ? 5 : 3)) {
+				int step = !vsync && fps > target + 20 ? 2 : 1;
 				next = Math.min(maxChunks, visibleChunks + step);
 				settleUntilMs = now + SHRINK_COOLDOWN_MS;
 				goodSamples = 0;

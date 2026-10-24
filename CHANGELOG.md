@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — 2026-10-24
+
+- Added Sodium integration: Sodium's own render-distance slider now reaches the ChunkView maximum, and Sodium's terrain section radius is capped to the full-detail ring while LOD or Distant Horizons owns the far terrain.
+- Sodium's culling radius follows the adaptive governor when LOD is off, so the governor actually reduces Sodium's terrain work.
+- Added an integrated-server view-distance cap so the server stops requesting the raw 64-chunk slider on low-memory devices.
+- `/chunkview reload` and presets now reset the section renderer, so a new `fullDetailDistance` takes effect without rejoining the world.
+- The governor now grows the visible radius when VSync pins FPS to the refresh rate; previously it could shrink once and never grow back.
+- LOD building now respects the heap-safe render distance instead of the raw slider.
+- Lower default startup pressure: `initialVisibleDistance` is 48 (was 64) and entity culling is 192 blocks (was 128).
+
 ## 0.3.1 — 2026-10-23
 
 - Fixed the `ViewArea` constructor clamping an uninitialized render distance of 0 to 2 chunks.
