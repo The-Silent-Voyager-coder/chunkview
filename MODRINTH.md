@@ -68,4 +68,4 @@ For Distant Horizons mode, also install DH and Sodium. ChunkView detects DH and 
 
 ## Credits
 
-The keep-chunks-loaded adaptive visible-radius strategy was informed by **FPSMaxx** by Adaptablxus (CC0-1.0): https://github.com/Adaptablxus/fpsmaxxing. ChunkView's implementation, LOD renderer, commands and configuration are independent code.
+The keep-chunks-loaded adaptive visible-radius strategy and several vanilla mixins were adapted from **FPSMaxx** by Adaptablxus (CC0-1.0): https://github.com/Adaptablxus/fpsmaxxing. The heightmap LOD renderer, governor thresholds, commands and configuration are original ChunkView code. See the repository's `THIRD_PARTY_NOTICES.md` for the specific mixins.

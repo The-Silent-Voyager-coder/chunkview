@@ -2,7 +2,7 @@
 
 ChunkView is a client-side Fabric mod for Minecraft 26.2 that raises the render-distance slider from 32 to 64 chunks. It keeps vanilla full-detail terrain near the player and draws the far ring with a lightweight heightmap LOD, then protects the frame rate with an adaptive visible-radius governor.
 
-The governor keeps chunks **loaded** at the requested distance but shrinks only the part that is submitted when FPS falls. That avoids the chunk-load hitch you get from changing the real render distance. This is the same broad strategy used by [FPSMaxx](https://github.com/Adaptablxus/fpsmaxxing) (CC0-1.0); ChunkView's implementation, LOD renderer and commands are independent code.
+The governor keeps chunks **loaded** at the requested distance but shrinks only the part that is submitted when FPS falls. That avoids the chunk-load hitch you get from changing the real render distance. This is the same broad strategy used by [FPSMaxx](https://github.com/Adaptablxus/fpsmaxxing) (CC0-1.0). Several vanilla mixins are adapted from FPSMaxx; the heightmap LOD renderer, governor thresholds, commands and configuration are ChunkView's own code. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Features
 
@@ -175,7 +175,7 @@ Logs are in `.minecraft/logs/latest.log`; search for `[ChunkView]`.
 
 ## Credits
 
-The keep-chunks-loaded adaptive visible-radius approach and the general performance targets were informed by **FPSMaxx** by Adaptablxus (CC0-1.0): https://github.com/Adaptablxus/fpsmaxxing. ChunkView does not copy its code or class structure; the LOD renderer, governor thresholds, commands and configuration are original.
+The keep-chunks-loaded adaptive visible-radius approach and several vanilla mixins were adapted from **FPSMaxx** by Adaptablxus (CC0-1.0): https://github.com/Adaptablxus/fpsmaxxing. The specific mixins are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The heightmap LOD renderer, governor thresholds, commands and configuration are original ChunkView code.
 
 ## License
 
