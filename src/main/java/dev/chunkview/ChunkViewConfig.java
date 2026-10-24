@@ -54,8 +54,8 @@ public final class ChunkViewConfig {
 	public boolean matchFogToVisibleRing = true;
 
 	/**
-	 * How many LOD regions may be built per client tick. 1 keeps tick times
-	 * flat while the view fills in.
+	 * How many LOD regions may be built per client tick. 1 limits each tick
+	 * to one region; heavy builds also trigger a short cooldown.
 	 */
 	public int regionBuildsPerFrame = 1;
 
