@@ -16,6 +16,10 @@ ChunkView adapts the keep-chunks-loaded adaptive visible-radius approach and sev
 - `GameRendererMixin` — match fog to the governed visible radius.
 - `LevelExtractorMixin` — cull distant entities and clamp their view scale.
 - `OptionsMixin` — extend the render-distance slider range.
+- `IntegratedServerMixin` — cap the integrated server's requested view distance.
+- `SodiumRenderSectionManagerMixin` — cap Sodium's terrain culling radius.
+- `SodiumWorldRendererMixin` — cap Sodium's fog to the governed ring.
+- Sodium config entrypoint — extend Sodium's render-distance slider.
 
 These files have been modified for ChunkView's configuration, memory guard and Distant Horizons mode. The heightmap LOD renderer, governor thresholds, commands and configuration format are ChunkView's own implementation.
 
