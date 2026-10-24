@@ -19,7 +19,7 @@ if (-not (Test-Path $Jar)) {
 }
 $JarPath = (Resolve-Path $Jar).Path
 
-$changelog = Get-Content "CHANGELOG.md" -Raw
+$changelog = Get-Content "CHANGELOG.md" -Raw -Encoding UTF8
 $body = @{
     name           = "ChunkView $version"
     version_number = $version
