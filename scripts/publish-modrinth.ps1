@@ -18,7 +18,9 @@ $body = @{
     name           = "ChunkView 0.4.1"
     version_number = "0.4.1"
     changelog      = $changelog
-    dependencies   = @()
+    dependencies   = @(
+        @{ project_id = "P7dR8mSH"; dependency_type = "required" }
+    )
     game_versions  = @("26.2")
     version_type   = "release"
     loaders        = @("fabric")
