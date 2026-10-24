@@ -132,6 +132,10 @@ Use `quality` on a desktop GPU when you care about distant structures. Use `phon
 
 The full-detail radius is the main cost. 20 chunks is 1,681 chunk columns; 24 is 2,401. The LOD is cheaper per chunk but not free. At 64 chunks the client loads 16,641 columns, so allocate **4–8 GB** of Java heap; 6 GB is a reasonable starting point.
 
+The LOD is built one region per client tick. At 2-block cells a 16x16-chunk region samples 16,384 cells, and a 64-chunk view has roughly 81 regions. The first fill can therefore cause brief tick spikes; 0.4.2 pauses for 250 ms after any build longer than 12 ms instead of stacking another one on the next tick. Use `balanced`/`phone` or keep `regionBuildsPerFrame` at 1 on slower CPUs.
+
+LOD GPU buffers also scale with the number of regions and the cell size. At 64 chunks and 2-block cells, expect roughly 80–150 MB of VRAM; 4- and 8-block cells cut that sharply. The memory guard only reasons about Java heap, so check VRAM separately on a 2 GB card.
+
 The governor does not speed up mob AI, block ticking, world generation or the server. Lower simulation distance if the CPU is the bottleneck. On a dedicated server the server's own view distance still applies; ChunkView cannot make a server send chunks it does not have.
 
 ### Far structures
@@ -159,7 +163,7 @@ If [Distant Horizons](https://modrinth.com/mod/distanthorizons) is installed, Ch
 
 Tested stack for Minecraft 26.2:
 
-- ChunkView 0.4.1
+- ChunkView 0.4.2
 - Distant Horizons 3.3.3-26.2
 - Sodium 0.9.2+mc26.2
 

@@ -36,7 +36,7 @@ Optional, recommended for the best far-terrain quality:
 
 1. Install Fabric Loader 0.19.5+ for Minecraft 26.2.
 2. Install Fabric API 0.161.0+26.2.
-3. Put `ChunkView-0.4.1-mc26.2.jar` in `.minecraft/mods`.
+3. Put `ChunkView-0.4.2-mc26.2.jar` in `.minecraft/mods`.
 4. Launch with Java 25.
 5. Set Render Distance to 64 in Video Settings.
 6. Turn VSync off and raise the frame cap if you want to measure above 60 FPS.

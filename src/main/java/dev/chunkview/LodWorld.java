@@ -48,6 +48,7 @@ public final class LodWorld {
 	private static ClientLevel lastLevel;
 	private static volatile float dayLight = 1.0f;
 	private static volatile int renderDistance;
+	private static long lodBuildCooldownUntilMs;
 
 	private LodWorld() {
 	}
@@ -185,8 +186,10 @@ public final class LodWorld {
 			return dx * dx + dz * dz;
 		}));
 
-		int budget = config.regionBuildsPerFrame;
 		long now = System.currentTimeMillis();
+		// A heavy region build buys the client a short break instead of
+		// stacking another multi-millisecond sample pass on the next tick.
+		int budget = now < lodBuildCooldownUntilMs ? 0 : config.regionBuildsPerFrame;
 
 		for (LodRegion region : candidates) {
 			if (budget <= 0) {
@@ -206,7 +209,16 @@ public final class LodWorld {
 			budget--;
 
 			try {
+				long buildStart = System.nanoTime();
 				buildRegion(level, region);
+				long buildMs = (System.nanoTime() - buildStart) / 1_000_000L;
+				if (config.debug) {
+					ChunkView.LOGGER.info("[ChunkView] LOD region {},{} built in {} ms",
+						region.rx, region.rz, buildMs);
+				}
+				if (buildMs > 12L) {
+					lodBuildCooldownUntilMs = now + 250L;
+				}
 			} catch (Throwable t) {
 				region.pending = false;
 				ChunkView.LOGGER.warn("[ChunkView] Failed to build LOD region {},{}", region.rx, region.rz, t);

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.2 — 2026-10-24
+
+- Replaced the ordinal-based `Options` mixin with an argument-matched `IntRange` redirect, so a vanilla option reorder cannot silently target the simulation-distance slider.
+- LOD region builds now pause for 250 ms after a build takes longer than 12 ms, preventing back-to-back multi-millisecond tick spikes while the far ring fills in.
+- Added a `debug` timing line for each LOD region build.
+- Added the Foojay toolchain resolver, so a fresh clone can download Java 25 instead of failing with "No matching toolchains found".
+- Added an English translation for the F6 keybind.
+
 ## 0.4.1 — 2026-10-24
 
 - Added a one-line join message showing the active LOD/DH mode and the F6/status hints (`showJoinMessage`).

@@ -1,32 +1,34 @@
 package dev.chunkview.mixin;
 
 import dev.chunkview.ChunkView;
+import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * The vanilla render-distance option is constructed as IntRange(2, 32/16, false).
- * Raise the maximum to the configured value (64 by default) while leaving the
- * simulation-distance range (5..32) alone. Ordinal 3 is the render-distance
- * IntRange call in Options#&lt;init&gt; (ordinal 4 is simulation distance).
+ * The vanilla render-distance option is constructed as IntRange(2, 32, false).
+ * Raise only that range. Matching on the constructor arguments instead of an
+ * ordinal keeps the mixin correct if Mojang reorders the options.
  */
 @Mixin(Options.class)
 public class OptionsMixin {
-	@ModifyArg(
+	@Redirect(
 		method = "<init>",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/OptionInstance$IntRange;<init>(IIZ)V",
-			ordinal = 3
-		),
-		index = 1
+		at = @At(value = "NEW", target = "net/minecraft/client/OptionInstance$IntRange")
 	)
-	private int chunkview$raiseRenderDistanceMaximum(int max) {
-		int raised = Math.max(max, ChunkView.maxRenderDistance());
-		ChunkView.LOGGER.info("[ChunkView] Render-distance max {} -> {} (heap {})",
-			max, raised, Runtime.getRuntime().maxMemory());
-		return raised;
+	private static OptionInstance.IntRange chunkview$raiseRenderDistanceMaximum(
+		int min,
+		int max,
+		boolean applyValueImmediately
+	) {
+		if (min == 2 && max == 32) {
+			int raised = Math.max(max, ChunkView.maxRenderDistance());
+			ChunkView.LOGGER.info("[ChunkView] Render-distance max {} -> {} (heap {})",
+				max, raised, Runtime.getRuntime().maxMemory());
+			return new OptionInstance.IntRange(min, raised, applyValueImmediately);
+		}
+		return new OptionInstance.IntRange(min, max, applyValueImmediately);
 	}
 }
