@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.3 — 2026-10-24
+
+- A heavy LOD build now stops the candidate loop for that tick, so `regionBuildsPerFrame` values above 1 cannot stack two heavy builds in one tick.
+- Extracted heap-guard and LOD cell-size math into `ChunkViewMath` and added JUnit tests for the memory guard, cell-size snapping and clamping.
+- `./gradlew build` now runs the unit tests.
+
 ## 0.4.2 — 2026-10-24
 
 - Replaced the ordinal-based `Options` mixin with an argument-matched `IntRange` redirect, so a vanilla option reorder cannot silently target the simulation-distance slider.

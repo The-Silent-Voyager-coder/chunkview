@@ -218,6 +218,9 @@ public final class LodWorld {
 				}
 				if (buildMs > 12L) {
 					lodBuildCooldownUntilMs = now + 250L;
+					// Do not start a second heavy build in the same tick even
+					// when regionBuildsPerFrame is 2 or higher.
+					break;
 				}
 			} catch (Throwable t) {
 				region.pending = false;

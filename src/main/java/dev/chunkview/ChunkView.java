@@ -35,23 +35,11 @@ public final class ChunkView implements ClientModInitializer {
 	}
 
 	public static int memorySafeRenderDistance() {
-		if (Boolean.getBoolean("chunkview.ignoreMemoryLimit")) {
-			return 64;
-		}
 		long heapMb = Runtime.getRuntime().maxMemory() / (1024L * 1024L);
-		if (heapMb >= 4096L) {
-			return 64;
-		}
-		if (heapMb >= 3072L) {
-			return 48;
-		}
-		if (heapMb >= 2048L) {
-			return 32;
-		}
-		if (heapMb >= 1536L) {
-			return 24;
-		}
-		return 16;
+		return ChunkViewMath.memorySafeRenderDistance(
+			heapMb,
+			Boolean.getBoolean("chunkview.ignoreMemoryLimit")
+		);
 	}
 
 	public static int fullDetailDistance() {

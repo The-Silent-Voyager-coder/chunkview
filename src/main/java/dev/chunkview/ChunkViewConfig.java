@@ -92,18 +92,18 @@ public final class ChunkViewConfig {
 	}
 
 	public void sanitize() {
-		maxRenderDistance = clamp(maxRenderDistance, 8, 64);
-		fullDetailDistance = clamp(fullDetailDistance, 2, 32);
+		maxRenderDistance = ChunkViewMath.clamp(maxRenderDistance, 8, 64);
+		fullDetailDistance = ChunkViewMath.clamp(fullDetailDistance, 2, 32);
 		if (fullDetailDistance > maxRenderDistance - 2) {
 			fullDetailDistance = Math.max(2, maxRenderDistance - 2);
 		}
-		lodCellSize = lodCellSize <= 2 ? 2 : (lodCellSize <= 4 ? 4 : 8);
-		regionBuildsPerFrame = clamp(regionBuildsPerFrame, 1, 4);
-		targetFps = clamp(targetFps, 30, 240);
-		minVisibleDistance = clamp(minVisibleDistance, 4, maxRenderDistance);
-		initialVisibleDistance = clamp(initialVisibleDistance, minVisibleDistance, maxRenderDistance);
-		entityCullDistance = clamp(entityCullDistance, 0, 512);
-		blockEntityCullDistance = clamp(blockEntityCullDistance, 0, 512);
+		lodCellSize = ChunkViewMath.lodCellSize(lodCellSize);
+		regionBuildsPerFrame = ChunkViewMath.clamp(regionBuildsPerFrame, 1, 4);
+		targetFps = ChunkViewMath.clamp(targetFps, 30, 240);
+		minVisibleDistance = ChunkViewMath.clamp(minVisibleDistance, 4, maxRenderDistance);
+		initialVisibleDistance = ChunkViewMath.clamp(initialVisibleDistance, minVisibleDistance, maxRenderDistance);
+		entityCullDistance = ChunkViewMath.clamp(entityCullDistance, 0, 512);
+		blockEntityCullDistance = ChunkViewMath.clamp(blockEntityCullDistance, 0, 512);
 	}
 
 	public boolean lodActive() {
@@ -179,9 +179,5 @@ public final class ChunkViewConfig {
 		}
 		save();
 		return true;
-	}
-
-	private static int clamp(int value, int min, int max) {
-		return Math.max(min, Math.min(max, value));
 	}
 }

@@ -163,7 +163,7 @@ If [Distant Horizons](https://modrinth.com/mod/distanthorizons) is installed, Ch
 
 Tested stack for Minecraft 26.2:
 
-- ChunkView 0.4.2
+- ChunkView 0.4.3
 - Distant Horizons 3.3.3-26.2
 - Sodium 0.9.2+mc26.2
 
@@ -196,6 +196,12 @@ Logs are in `.minecraft/logs/latest.log`; search for `[ChunkView]`.
 4. **One GPU pass** draws visible LOD regions with frustum/distance culling and a near-discard at the full-detail boundary.
 5. **Governor** samples FPS once per second, caps the section-occlusion graph and LOD ring without unloading chunks, and matches fog to the reduced ring.
 6. **Culling** rejects distant entities and block entities before extraction.
+
+## Development
+
+- `./gradlew build` compiles, runs the unit tests and builds the jar.
+- `./gradlew test` runs only the unit tests.
+- `./gradlew runClient` launches the development client. Gradle can download Java 25 through the Foojay resolver if it is missing.
 
 ## Credits
 
